@@ -23,12 +23,11 @@ namespace D2EquipEase
             try
             {
                 string EquipmentType = "SELECT TypeName FROM EquipmentType";
-              
                 string pickUpBranch = "SELECT BranchName FROM branch ";
                 string Email = "SELECT Email FROM Customer";
-
+                
                 SQL.editComboBoxItems(comboBoxEquipmentName, EquipmentType);
-               
+                
                 SQL.editComboBoxItems(comboBoxPickUp, pickUpBranch);
                 SQL.editComboBoxItems(comboBoxEmail, Email);
 
@@ -43,154 +42,34 @@ namespace D2EquipEase
         }
 
 
-        private bool checkTextBoxes()
+        private bool checksInputs()
         {
-
-            bool holdsData = true;
-            //go through all of the controls
-            foreach (Control c in this.Controls)
+            if (comboBoxEquipmentName.SelectedIndex == -1 || comboBoxPickUp.SelectedIndex == -1 || comboBoxEmail.SelectedIndex == -1 )
             {
-                //if its a textbox, but doesnt matter if its middle textbox
-                if (c is TextBox )
-                {
-                    //If it is not the case that it is empty
-                    if ("".Equals((c as TextBox).Text.Trim()))
-                    {
-                        //set boolean to false because on textbox is empty
-                        holdsData = false;
-                    }
-                }
+                return false;
             }
-            //returns true or false based on if data is in all text boxs or not
-            return holdsData;
+            return true;
         }
 
-
-
+        private bool checkDate(string startTimeInput)
+        {
+            DateTime startTime;
+            string Format = "yyyy-MM-dd HH:mm:ss";
+            if (!DateTime.TryParseExact(startTimeInput, Format, null, System.Globalization.DateTimeStyles.None, out startTime))
+            {
+                return false;
+            }
+            return true ;
+        }
 
 
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
 
-            string equipmentType = "", startTime = "", branchName = "", email = "";
-            
-            equipmentType = comboBoxEquipmentName.SelectedItem.ToString();
-            startTime = textBoxStart.Text.Trim();
-            branchName = comboBoxPickUp.SelectedItem.ToString();
-            email = comboBoxEmail.SelectedItem.ToString();
-
-
-
 
 
             
-            // Check if all necessary details are provided
-            if (string.IsNullOrEmpty(equipmentType) || string.IsNullOrEmpty(startTime) || string.IsNullOrEmpty(branchName) || string.IsNullOrEmpty(email))
-            {
-                MessageBox.Show("Please enter all the necessary details.");
-                return;
-            }
-
-            try
-            {
-                // Query the database to retrieve the EquipmentID based on the equipment type
-                string query = @"
-            SELECT TOP 1 e.EquipmentID
-            FROM Equipment e
-            WHERE e.available = 1
-              AND e.TypeName = '" + equipmentType + "'";
-
-                // Call the selectQuery method to execute the query
-                SQL.selectQuery(query);
-
-                // Check if any equipment is found for the provided type
-                if (SQL.read.HasRows)
-                {
-                    // Read the EquipmentID from the result set
-                    SQL.read.Read();
-                    int equipmentID = SQL.read["EquipmentID"] != DBNull.Value ? Convert.ToInt32(SQL.read["EquipmentID"]) : 0;
-
-                    if (equipmentID == 0)
-                    {
-                        MessageBox.Show("No available equipment found for the specified type.");
-                        return;
-                    }
-
-                    // Insert a new rental record
-                    string insertRentalQuery = @"
-                INSERT INTO Rental (startTime, hireFrom, CustomerEmail)
-                VALUES ('" + startTime + "', '" + branchName + "', '" + email + "')";
-
-                    // Execute the insertion query
-                    SQL.executeQuery(insertRentalQuery);
-
-                    // Retrieve the RentalID of the newly inserted rental record
-                    string getRentalIDQuery = "SELECT SCOPE_IDENTITY()";
-                    SQL.selectQuery(getRentalIDQuery);
-
-                    if (SQL.read.HasRows)
-                    {
-                        SQL.read.Read();
-                        int rentalID = SQL.read[0] != DBNull.Value ? Convert.ToInt32(SQL.read[0]) : 0;
-
-                        if (rentalID == 0)
-                        {
-                            MessageBox.Show("Failed to create rental record.");
-                            return;
-                        }
-
-                        // Link the rented equipment to the rental in the rentEquipment table
-                        string linkEquipmentQuery = @"
-                    INSERT INTO rentEquipment (rEquipmentID, rRentalID, returnTime, returnTo)
-                    VALUES (" + equipmentID + ", " + rentalID + ", NULL, NULL)";
-
-                        SQL.executeQuery(linkEquipmentQuery);
-
-                        // Update the equipment status to unavailable
-                        string updateEquipmentQuery = "UPDATE Equipment SET available = 0 WHERE EquipmentID = " + equipmentID;
-                        SQL.executeQuery(updateEquipmentQuery);
-
-                        // Notify the user of a successful booking
-                        MessageBox.Show($"Successfully booked {equipmentType} for hire, picking it up from {branchName} at {startTime} for the email: {email}");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to retrieve RentalID.");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("No available equipment found for the specified type.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred: " + ex.Message);
-            }
-
-        }
-
-        
-
-
-        private void buttonToMain_Click(object sender, EventArgs e)
-        {
-            //hide current form 
-            Hide();
-            //creates the new main page
-            formMain main = new formMain();
-            //shows the records page window
-            main.ShowDialog();
-            //close current open windoes so it is only the one showing. 
-            this.Close();
-
-        }
-
-
-
-        private void buttonHelp_Click(object sender, EventArgs e)
-        {
             // Get the equipment type entered by the user from the textbox
             string equipmentType = comboBoxEquipmentName.SelectedItem.ToString();
             //uses the helper function to get the equipmentID
@@ -207,6 +86,17 @@ namespace D2EquipEase
             //gets the users email and checks it is in the database could use helper method in the future.
             string email = comboBoxEmail.SelectedItem.ToString();
 
+            
+            if (!checksInputs())
+            {
+                MessageBox.Show("Please ensure you have filled in all inputs.");
+                return;
+            }
+            if (!checkDate(startTime))
+            {
+                MessageBox.Show("Please double check the date format.\nNeeds to be yyyy-MM-dd HH:mm:ss");
+                return;
+            }
 
 
             //insert into Rental table 
@@ -219,10 +109,7 @@ namespace D2EquipEase
             //gets the rental ID using the helper method. 
             int rentalID = GetRentalID();
 
-            //string insertRentEquipment = @"
-            //    INSERT INTO rentEquipment ( rEquipmentID, rRentalID)
-	           // VALUES ('" + equipmentID + "', '" + RentalID + "')";
-
+            //inserts into the rentEquipment table, uses variables to stop sql injections
             string rentEquipmentQuery = "INSERT INTO rentEquipment (rEquipmentID, rRentalID) VALUES (@equipmentID, @rentalID)";
             using (SqlCommand command = new SqlCommand(rentEquipmentQuery, SQL.con))
             {
@@ -234,8 +121,21 @@ namespace D2EquipEase
             MessageBox.Show($"Successfull. Pick up the {equipmentType} on the {startTime} from {branchName}, for {email}.");
 
 
+        }
 
 
+
+
+        private void buttonToMain_Click(object sender, EventArgs e)
+        {
+            //hide current form 
+            Hide();
+            //creates the new main page
+            formMain main = new formMain();
+            //shows the records page window
+            main.ShowDialog();
+            //close current open windoes so it is only the one showing. 
+            this.Close();
 
         }
 
@@ -312,11 +212,33 @@ namespace D2EquipEase
             }
         }
 
-
-
-        private void comboBoxEquipmentName_SelectedIndexChanged(object sender, EventArgs e)
+        private void buttonOrder_Click(object sender, EventArgs e)
         {
+            try
+            {
+                string orderQuery = @"
+                        SELECT TypeName, purchaseDate
+                        FROM Equipment
+                        ORDER BY purchaseDate DESC";
 
+
+                SQL.editComboBoxItems(comboBoxEquipmentName, orderQuery);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
+        }
+
+        private void buttonOrderAlphabetical_Click(object sender, EventArgs e)
+        {
+            string EquipmentType = "SELECT TypeName FROM EquipmentType";
+            SQL.editComboBoxItems(comboBoxEquipmentName, EquipmentType);
         }
     }
 }

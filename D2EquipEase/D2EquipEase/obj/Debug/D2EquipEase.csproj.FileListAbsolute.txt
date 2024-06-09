@@ -11,3 +11,4 @@ C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2Equip
 C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.formCreateBooking.resources
 C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.formMain.resources
 C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.formLogin.resources
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.formReturn.resources

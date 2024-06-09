@@ -55,5 +55,17 @@ namespace D2EquipEase
 
 
         }
+
+        private void buttonReturns_Click(object sender, EventArgs e)
+        {
+            //hide current form 
+            Hide();
+            //creates the new login page
+            formReturn Return = new formReturn();
+            //shows the Returns page window
+            Return.ShowDialog();
+            //close current open windoes so it is only the one showing. 
+            this.Close();
+        }
     }
 }

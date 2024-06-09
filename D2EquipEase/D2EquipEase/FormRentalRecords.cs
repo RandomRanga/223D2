@@ -17,6 +17,8 @@ namespace D2EquipEase
             InitializeComponent();
             //sets the first item as the defult item in the combo box. 
             comboBoxFilter.SelectedIndex = 0;
+            listBoxDisplay.Items.Clear();
+
         }
 
 
@@ -26,7 +28,12 @@ namespace D2EquipEase
         {
             string query;
 
-            query = "SELECT \r\n    EquipmentType.TypeName, \r\n    Rental.startTime, \r\n    rentEquipment.returnTime, \r\n    Equipment.BranchName, \r\n    rentEquipment.returnTo, \r\n    Rental.CustomerEmail \r\nFROM \r\n    rentEquipment\r\nINNER JOIN \r\n    Rental ON rentEquipment.rRentalID = Rental.RentalID\r\nINNER JOIN \r\n    Equipment ON rentEquipment.rEquipmentID = Equipment.EquipmentID\r\nINNER JOIN \r\n    EquipmentType ON Equipment.TypeName = EquipmentType.TypeName;";
+            //query = "SELECT \r\n    EquipmentType.TypeName, \r\n    Rental.startTime, \r\n    rentEquipment.returnTime, \r\n    Equipment.BranchName, \r\n    rentEquipment.returnTo, \r\n    Rental.CustomerEmail \r\nFROM \r\n    rentEquipment\r\nINNER JOIN \r\n    Rental ON rentEquipment.rRentalID = Rental.RentalID\r\nINNER JOIN \r\n    Equipment ON rentEquipment.rEquipmentID = Equipment.EquipmentID\r\nINNER JOIN \r\n    EquipmentType ON Equipment.TypeName = EquipmentType.TypeName;";
+
+            
+
+
+
 
 
             // check what type of rental records we want to display
@@ -45,6 +52,11 @@ namespace D2EquipEase
             else if (comboBoxFilter.SelectedItem.ToString() == "Past Rentals")
             {
                 query = "SELECT \r\n    EquipmentType.TypeName, \r\n    Rental.startTime, \r\n    rentEquipment.returnTime, \r\n    Equipment.BranchName, \r\n    rentEquipment.returnTo, \r\n    Rental.CustomerEmail \r\nFROM \r\n    rentEquipment\r\nINNER JOIN \r\n    Rental ON rentEquipment.rRentalID = Rental.RentalID\r\nINNER JOIN \r\n    Equipment ON rentEquipment.rEquipmentID = Equipment.EquipmentID\r\nINNER JOIN \r\n    EquipmentType ON Equipment.TypeName = EquipmentType.TypeName\r\n\tWHERE (rentEquipment.returnTime < GETDATE());";
+            }
+            else
+            {
+                MessageBox.Show("plese ensure you have filled in the Filter");
+                return;
             }
 
             //The SQL select query, using the correct query choosen above
@@ -112,5 +124,7 @@ namespace D2EquipEase
             //close current open windoes so it is only the one showing. 
             this.Close();
         }
+
+       
     }
 }
