@@ -1,0 +1,10 @@
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.csproj.AssemblyReference.cache
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.FormRentalRecords.resources
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.Properties.Resources.resources
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.csproj.GenerateResource.cache
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.csproj.CoreCompileInputs.cache
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\bin\Debug\D2EquipEase.exe.config
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\bin\Debug\D2EquipEase.exe
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\bin\Debug\D2EquipEase.pdb
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.exe
+C:\Users\tobyh\OneDrive\Desktop\school work\uni 2024\compx223\D2\Part2V5\D2EquipEase\D2EquipEase\obj\Debug\D2EquipEase.pdb
